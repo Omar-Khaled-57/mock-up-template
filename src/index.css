@@ -1,0 +1,85 @@
+/* ── Tailwind directives ── */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── Scene dot-grid overlay ── */
+.scene::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,.12) 1px, transparent 1px);
+  background-size: 26px 26px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Device chrome (traffic-light dots, iPad bar, phone notch) ── */
+.monitor-bar span:nth-child(1) { background: #ff5f57; }
+.monitor-bar span:nth-child(2) { background: #febc2e; }
+.monitor-bar span:nth-child(3) { background: #28c840; }
+
+.ipad-bar::after {
+  content: '';
+  width: 22%;
+  height: 4px;
+  background: #222230;
+  border-radius: 2px;
+}
+
+.phone-notch::after {
+  content: '';
+  width: 30%;
+  height: 5px;
+  background: #222230;
+  border-radius: 3px;
+}
+
+/* ── Edit hint (top-left label) ── */
+.edit-hint {
+  position: absolute;
+  top: 10px;
+  left: 5%;
+  font-size: 10px;
+  color: rgba(255,255,255,.25);
+  z-index: 20;
+  pointer-events: none;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── Upload placeholder visibility ──
+     Hidden when an image is active; shown again on hover so user can replace. ── */
+.screen-container.has-image .upload-placeholder {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.screen-container.has-image:hover .upload-placeholder {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Editable text placeholders (shown when content is empty) ── */
+[contenteditable]:empty::before {
+  content: attr(data-placeholder);
+  color: rgba(255,255,255,.35);
+}
+
+.scene-title:empty::before {
+  font-weight: 900;
+}
+
+.scene-slogan:empty::before {
+  color: rgba(255,255,255,.25);
+}
