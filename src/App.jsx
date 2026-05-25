@@ -11,10 +11,13 @@
 import { useState, useRef, useCallback } from 'react';
 import Controls from './components/Controls';
 import Scene from './components/Scene';
+import BlueCyberBg from './components/BlueCyberBg';
 
 let nextId = 1;
 
 export default function App() {
+  const [bgPreset, setBgPreset] = useState('gradient');
+  const [textGlow, setTextGlow] = useState(false);
   const [gradient, setGradient] = useState({
     colors: ['#3b1fa8', '#7c2fd4', '#1a0e6e', '#0a0540'],
     angle: 135,
@@ -63,7 +66,23 @@ export default function App() {
         p.removeAttribute('data-placeholder');
       });
 
-      html2canvas(el, { scale: 2, useCORS: true, backgroundColor: null, logging: false })
+      html2canvas(el, { 
+        scale: 2, 
+        useCORS: true, 
+        backgroundColor: null, 
+        logging: false,
+        onclone: (doc) => {
+          // html2canvas struggles with background-clip: text, so we fallback to a solid color
+          const glowingText = doc.querySelectorAll('.title-glow');
+          glowingText.forEach(node => {
+            node.style.background = 'none';
+            node.style.webkitBackgroundClip = 'initial';
+            node.style.backgroundClip = 'initial';
+            node.style.color = '#3ca3ff';
+            node.style.webkitTextFillColor = '#3ca3ff';
+          });
+        }
+      })
         .then(canvas => {
           const link = document.createElement('a');
           link.download = 'device-mockup.png';
@@ -81,6 +100,10 @@ export default function App() {
   return (
     <>
       <Controls
+        bgPreset={bgPreset}
+        setBgPreset={setBgPreset}
+        textGlow={textGlow}
+        setTextGlow={setTextGlow}
         gradient={gradient}
         setGradient={setGradient}
         overflow={overflow}
@@ -97,13 +120,14 @@ export default function App() {
       <main className="w-full flex-1 flex items-center justify-center px-6 py-10 md:py-14">
         <div
           ref={sceneRef}
-          className="scene relative w-full max-w-[960px] aspect-video rounded-[18px] overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,.75)]"
+          className={`scene relative w-full max-w-[960px] aspect-video rounded-[18px] overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,.75)] preset-${bgPreset}`}
           style={{
-            background: `linear-gradient(${gradient.angle}deg, ${gradient.colors.join(', ')})`,
+            background: bgPreset === 'gradient' ? `linear-gradient(${gradient.angle}deg, ${gradient.colors.join(', ')})` : '#05080c',
           }}
         >
+          {bgPreset === 'blue-cyber' && <BlueCyberBg />}
           <span className="edit-hint">&#9998; click title / slogan to edit</span>
-          <Scene overflow={overflow} titleSize={titleSize} sloganSize={sloganSize} textBoxes={textBoxes} removeTextBox={removeTextBox} updateTextBox={updateTextBox} />
+          <Scene textGlow={textGlow} overflow={overflow} titleSize={titleSize} sloganSize={sloganSize} textBoxes={textBoxes} removeTextBox={removeTextBox} updateTextBox={updateTextBox} />
         </div>
       </main>
     </>

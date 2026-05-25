@@ -15,7 +15,7 @@ body {
 }
 
 /* ── Scene dot-grid overlay ── */
-.scene::before {
+.scene.preset-gradient::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -82,4 +82,86 @@ body {
 
 .scene-slogan:empty::before {
   color: rgba(255,255,255,.25);
+}
+
+/* ── Title Glow ── */
+.title-glow {
+  background: linear-gradient(to bottom right, #73c8ff, #0080ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 20px rgba(0, 128, 255, 0.3), 0 0 40px rgba(0, 128, 255, 0.1);
+}
+
+/* ── Cyber Background Preset ── */
+.cyber-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+      linear-gradient(rgba(0, 128, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 128, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: gridMove 20s linear infinite;
+}
+
+.cyber-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(0, 128, 255, 0.06) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 30%, rgba(140, 26, 255, 0.04) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 80%, rgba(0, 200, 255, 0.03) 0%, transparent 50%);
+}
+
+.cyber-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.cyber-particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #0080ff; /* accent-primary */
+  border-radius: 50%;
+  opacity: 0;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+@keyframes gridMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(40px); }
+}
+
+.cyber-particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+.cyber-particle:nth-child(2) { left: 25%; top: 60%; animation-delay: 0.4s; width: 3px; height: 3px; }
+.cyber-particle:nth-child(3) { left: 45%; top: 10%; animation-delay: 0.8s; }
+.cyber-particle:nth-child(4) { left: 65%; top: 70%; animation-delay: 1.2s; width: 1px; height: 1px; }
+.cyber-particle:nth-child(5) { left: 80%; top: 30%; animation-delay: 1.6s; }
+.cyber-particle:nth-child(6) { left: 15%; top: 85%; animation-delay: 0.2s; width: 3px; height: 3px; }
+.cyber-particle:nth-child(7) { left: 55%; top: 45%; animation-delay: 0.6s; }
+.cyber-particle:nth-child(8) { left: 90%; top: 15%; animation-delay: 1.0s; }
+.cyber-particle:nth-child(9) { left: 35%; top: 90%; animation-delay: 1.4s; }
+.cyber-particle:nth-child(10) { left: 70%; top: 55%; animation-delay: 1.8s; }
+.cyber-particle:nth-child(11) { left: 5%; top: 40%; animation-delay: 0.3s; width: 1px; height: 1px; }
+.cyber-particle:nth-child(12) { left: 50%; top: 75%; animation-delay: 0.7s; }
+
+.cyber-scanline {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 128, 255, 0.015) 2px,
+      rgba(0, 128, 255, 0.015) 4px
+  );
+  pointer-events: none;
 }

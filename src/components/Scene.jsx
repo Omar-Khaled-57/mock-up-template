@@ -10,7 +10,7 @@ import Monitor from './Monitor';
 import Ipad from './Ipad';
 import Phone from './Phone';
 
-export default function Scene({ overflow, titleSize, sloganSize, textBoxes = [], removeTextBox, updateTextBox }) {
+export default function Scene({ textGlow, overflow, titleSize, sloganSize, textBoxes = [], removeTextBox, updateTextBox }) {
   return (
     <>
       {/* ── Left-side editable text block ── */}
@@ -23,7 +23,7 @@ export default function Scene({ overflow, titleSize, sloganSize, textBoxes = [],
           placeholder="YOUR TITLE"
           initial="ANALYTICAL<br>DATA COLLECTION"
           fontSize={`${titleSize}px`}
-          className="font-inter text-white font-black leading-[1.05] tracking-[-0.02em] outline-none cursor-text pb-[4px]"
+          className={`font-inter font-black leading-[1.05] tracking-[-0.02em] outline-none cursor-text pb-[4px] ${textGlow ? 'title-glow' : 'text-white'}`}
           style={{ pointerEvents: 'auto', wordBreak: 'break-word' }}
         />
         <EditableText

@@ -5,6 +5,8 @@
 import { useCallback } from 'react';
 
 export default function Controls({
+  bgPreset, setBgPreset,
+  textGlow, setTextGlow,
   gradient, setGradient,
   overflow, setOverflow,
   titleSize, setTitleSize,
@@ -28,12 +30,22 @@ export default function Controls({
 
   return (
     <header className="w-full bg-[#16161d] border-b border-white/5 px-7 py-[14px] flex flex-wrap gap-[14px_24px] items-center sticky top-0 z-[100]">
-      <h2 className="text-[11px] font-semibold tracking-[.14em] uppercase text-white/30 w-full mb-[-4px]">
-        Gradient Background
-      </h2>
+      <div className="flex items-center gap-4 w-full mb-[-4px]">
+        <h2 className="text-[11px] font-semibold tracking-[.14em] uppercase text-white/30">
+          Background
+        </h2>
+        <select
+          value={bgPreset}
+          onChange={(e) => setBgPreset(e.target.value)}
+          className="bg-[#2a2a3a] text-white/80 text-xs rounded border border-white/10 px-2 py-[2px] outline-none cursor-pointer"
+        >
+          <option value="gradient">Gradient</option>
+          <option value="blue-cyber">Blue Cyber</option>
+        </select>
+      </div>
 
       {/* 4 colour pickers */}
-      {[0, 1, 2, 3].map(i => (
+      {bgPreset === 'gradient' && [0, 1, 2, 3].map(i => (
         <div key={i} className="flex items-center gap-2">
           <label className="text-xs text-white/45 whitespace-nowrap">Color {i + 1}</label>
           <input
@@ -62,6 +74,28 @@ export default function Controls({
           <span
             className={`absolute top-[2px] left-[2px] w-[14px] h-[14px] rounded-full bg-white transition-transform ${
               overflow ? 'translate-x-[16px]' : 'translate-x-0'
+            }`}
+          />
+        </button>
+      </div>
+
+      {/* Text Glow toggle */}
+      <div className="flex items-center gap-2">
+        <label className="text-xs text-white/45 whitespace-nowrap cursor-pointer select-none" htmlFor="glow-toggle">
+          Text Glow
+        </label>
+        <button
+          id="glow-toggle"
+          role="switch"
+          aria-checked={textGlow}
+          onClick={() => setTextGlow(v => !v)}
+          className={`relative w-[36px] h-[20px] rounded-full border transition-colors ${
+            textGlow ? 'bg-[#7c2fd4] border-[#7c2fd4]' : 'bg-[#2a2a3a] border-white/15'
+          }`}
+        >
+          <span
+            className={`absolute top-[2px] left-[2px] w-[14px] h-[14px] rounded-full bg-white transition-transform ${
+              textGlow ? 'translate-x-[16px]' : 'translate-x-0'
             }`}
           />
         </button>
@@ -117,22 +151,26 @@ export default function Controls({
         <span className="text-[11px] text-white/35 min-w-[24px]">{sloganSize}px</span>
       </div>
 
-      {/* Divider */}
-      <div className="w-[1px] h-6 bg-white/10" />
+      {bgPreset === 'gradient' && (
+        <>
+          {/* Divider */}
+          <div className="w-[1px] h-6 bg-white/10" />
 
-      {/* Angle slider */}
-      <div className="flex items-center gap-2">
-        <label className="text-xs text-white/45 whitespace-nowrap">Angle</label>
-        <input
-          type="range"
-          min="0"
-          max="360"
-          value={angle}
-          onChange={e => updateAngle(e.target.value)}
-          className="w-[100px] accent-[#7c2fd4]"
-        />
-        <span className="text-[11px] text-white/35 min-w-[32px]">{angle}°</span>
-      </div>
+          {/* Angle slider */}
+          <div className="flex items-center gap-2">
+            <label className="text-xs text-white/45 whitespace-nowrap">Angle</label>
+            <input
+              type="range"
+              min="0"
+              max="360"
+              value={angle}
+              onChange={e => updateAngle(e.target.value)}
+              className="w-[100px] accent-[#7c2fd4]"
+            />
+            <span className="text-[11px] text-white/35 min-w-[32px]">{angle}°</span>
+          </div>
+        </>
+      )}
 
       {/* Export button */}
       <button
